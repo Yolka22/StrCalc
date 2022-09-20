@@ -11,12 +11,20 @@ struct node
     node* left;
     node* right;
 };
+
+
 struct nd
 {
     double date;
     nd* next;
 };
+
 nd* Head;
+
+/// <summary>
+/// Push data in node
+/// </summary>
+/// <param name="date">input data</param>
 void Push_nd(double date)
 {
     nd* temp = new nd;
@@ -25,6 +33,10 @@ void Push_nd(double date)
     Head = temp;
     return;
 }
+
+/// <summary>
+/// Print node
+/// </summary>
 void Print_nd()
 {
     nd* q = Head;
@@ -35,6 +47,12 @@ void Print_nd()
     }
     return;
 }
+
+/// <summary>
+/// Sets priority for operand  
+/// </summary>
+/// <param name="c">symbol from stream</param>
+/// <returns></returns>
 int Priority(char c)
 {
     switch (c)
@@ -46,6 +64,8 @@ int Priority(char c)
     }
     return 1000;
 }
+
+
 double Pop()
 {
     if (Head == 0)
@@ -54,6 +74,8 @@ double Pop()
     Head = Head->next;
     return i;
 }
+
+
 node* MakeTree(string* Term, size_t first, size_t last)
 {
     int nest = 0;
@@ -64,8 +86,11 @@ node* MakeTree(string* Term, size_t first, size_t last)
         Tree->left = Tree->right = 0;
         return Tree;
     }
+
     int minprt = 100;
     size_t k;
+
+
     for (size_t i = first; i <= last; i++)
     {
         size_t size_perem = Term[i].size();
@@ -79,6 +104,8 @@ node* MakeTree(string* Term, size_t first, size_t last)
                 k = i;
             }
         }
+
+
         else
         {
             char c = Term[i][0];
@@ -109,6 +136,11 @@ node* MakeTree(string* Term, size_t first, size_t last)
     Tree->right = MakeTree(Term, k + 1, last);
     return Tree;
 }
+
+/// <summary>
+/// Calculate and feel result to node
+/// </summary>
+/// <param name="Tree"></param>
 void LPK(node* Tree)
 {
     if (!Tree)
@@ -168,10 +200,19 @@ void LPK(node* Tree)
     return;
 }
 
+
 bool isOperandSym(int ch) {
     return isalnum(ch) || ch == '_' || ch == '.' || ch == ',';
 }
 
+
+
+/// <summary>
+/// Calculates size of expression tree
+/// </summary>
+/// <param name="s">expression string</param>
+/// <param name="n">lenght of expression string</param>
+/// <returns>size of expression tree</returns>
 size_t SizeTree(const string& s, size_t n)
 {
     size_t p = 0;
@@ -193,6 +234,8 @@ size_t SizeTree(const string& s, size_t n)
     }
     return p;
 }
+
+
 string Input_perem(const string& s)
 {
     cout << "Введите значение переменной:" << s << endl;
@@ -200,6 +243,8 @@ string Input_perem(const string& s)
     cin >> name_perem;
     return name_perem;
 }
+
+
 void MakeTerm(string* Term, size_t n, const string& s, int* k)
 {
     for (int i = 0; i < n; i++)
@@ -268,6 +313,8 @@ void MakeTerm(string* Term, size_t n, const string& s, int* k)
     }
     return;
 }
+
+
 int main()
 {
     setlocale(0, "");
@@ -275,14 +322,22 @@ int main()
     size_t size_term = 0;
     int k = 0;
     string s;
+
+
     cout << "Введите уравнение: ";
     getline(cin, s);
+
     n = s.size();
+
     size_term = SizeTree(s, n);
+
     string* Term = new string[size_term];
     MakeTerm(Term, n, s, &k);
     node* Tree = MakeTree(Term, 0, size_term - 1);
+
     LPK(Tree);
+
     Print_nd();
+
     return 0;
 }
